@@ -1,5 +1,4 @@
 defmodule Parallel do
-  import :timer, only: [sleep: 1]
   def pmap(collection, fun) do
     me = self()
     collection
@@ -13,12 +12,20 @@ defmodule Parallel do
        )
     |> Enum.map(
          fn pid -> receive do
-                     # Order is not enforced when its _
+           
                      {_pid, result} -> result
                    end
          end
        )
   end
+
+  def times(x) when x > 0 do
+    IO.inspect Parallel.pmap 1..100, &(&1 * &1)
+    times(x-1)
+  end
+
+  def times(_x) do
+  end
 end
 
-IO.inspect Parallel.pmap 1..10, &(&1 * &1)
+IO.inspect Parallel.times(10)

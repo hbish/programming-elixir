@@ -17,7 +17,7 @@ end
 
 pid = spawn(Spawn3, :greet, [])
 
-# first message
+# first.txt message
 send pid, {self(), "World!"}
 
 receive do
