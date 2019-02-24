@@ -1,4 +1,4 @@
-defmodule Stack.Server do
+defmodule Stack1.Server do
   @moduledoc false
 
   @name MyStackServer
@@ -23,12 +23,12 @@ defmodule Stack.Server do
   #############
   # GenServer Implementation
   #############
-  def init(stack) do
-    {:ok, stack}
+  def init(_) do
+    {:ok, Stack1.Stash.get()}
   end
 
   def handle_call(:pop, _from, current_stack) when current_stack == [] do
-    System.halt(0)
+    raise "error popping from empty stack"
   end
 
   def handle_call(:pop, _from, current_stack) do
@@ -42,7 +42,7 @@ defmodule Stack.Server do
     {:noreply, new_stack}
   end
 
-  def terminate(reason, state) do
-    IO.puts "Server terminated due to #{reason} with state #{state}"
+  def terminate(_reason, current_stack) do
+    Stack1.Stash.update(current_stack)
   end
 end
